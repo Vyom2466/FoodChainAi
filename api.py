@@ -6,17 +6,27 @@ from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 from sklearn.ensemble import RandomForestRegressor
 import json
+from dotenv import load_dotenv
+
+load_dotenv()
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 DB_PATH = os.path.join(BASE_DIR, "foodchain_ai.db")
 
 app = Flask(__name__)
-app.secret_key = "change_this_secret_key"
+app.secret_key = os.getenv("FLASK_SECRET_KEY", "change_this_secret_key_in_production")
+
+# Get allowed origins from environment or use defaults
+allowed_origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    os.getenv("FRONTEND_URL", "http://localhost:3000")
+]
 
 # Configure CORS with explicit settings for credentials
 CORS(app, 
      supports_credentials=True,
-     origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+     origins=allowed_origins,
      allow_headers=["Content-Type", "Authorization", "Accept"],
      methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
      expose_headers=["Content-Type"])
