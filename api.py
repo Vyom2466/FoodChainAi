@@ -20,6 +20,7 @@ app.secret_key = os.getenv("FLASK_SECRET_KEY", "change_this_secret_key_in_produc
 allowed_origins = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "https://food-chain-ai.vercel.app",
     os.getenv("FRONTEND_URL", "http://localhost:3000")
 ]
 
@@ -32,8 +33,8 @@ CORS(app,
      expose_headers=["Content-Type"])
 
 # Configure session cookie settings for cross-origin requests
-app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'  # Changed from None to Lax for localhost
-app.config['SESSION_COOKIE_SECURE'] = False  # Set to True in production with HTTPS
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+app.config['SESSION_COOKIE_SECURE'] = True  # True for HTTPS in production
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 app.config['SESSION_COOKIE_PATH'] = '/'
 
